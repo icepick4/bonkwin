@@ -38,7 +38,7 @@ function AnnonceNew({ userId }: AnnonceNewProps) {
         //todo
     };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async () => {
         const newId = await fetch('http://localhost:3005/api/annonce/new/id');
         let newAnnonce: Annonce = {
             id: parseInt(await newId.text()),
@@ -57,7 +57,7 @@ function AnnonceNew({ userId }: AnnonceNewProps) {
             body: JSON.stringify(newAnnonce)
         });
         if (response.ok) {
-            navigate(`/user/annonces/${newAnnonce.id}`);
+            navigate(`/annonces/user`);
         } else {
             const error = await response.text();
             console.error(error);
@@ -79,7 +79,12 @@ function AnnonceNew({ userId }: AnnonceNewProps) {
                     Catégories
                 </h2>
                 <ManageCategoriesAnnonce />
-                <ManageSaveAnnonce />
+                <ManageSaveAnnonce
+                    handleSubmit={handleSubmit}
+                    title={title}
+                    description={description}
+                    prix={prix}
+                />
             </div>
         </div>
     );
