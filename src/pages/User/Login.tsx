@@ -25,7 +25,7 @@ function Login() {
         if (response.ok) {
             const user = await response.json();
             localStorage.setItem('userId', user.id.toString());
-            navigate(`/user/annonces/${user.id}`);
+            navigate(`/user`);
             setValidUserName(true);
         } else {
             const error = await response.text();

@@ -15,7 +15,7 @@ function Profil() {
         const response = await fetch(
             `http://localhost:3005/api/user/edit/${userId}`,
             {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -52,6 +52,7 @@ function Profil() {
         <div className="flex flex-col gap-5">
             <UserCard
                 userName={userName}
+                userId={userId}
                 handleSubmit={handleSubmit}
                 handleUserNameChange={handleUserNameChange}
             />
