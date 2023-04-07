@@ -1,7 +1,13 @@
-import { useEffect, useState } from 'react';
+import { ChangeEventHandler, useEffect, useState } from 'react';
 import { Categorie } from '../../../types/annonce';
 
-function ManageCategoriesAnnonce() {
+type ManageCategoriesAnnonceProps = {
+    handleCategoriesChange: (categories: Categorie[]) => void;
+};
+
+function ManageCategoriesAnnonce({
+    handleCategoriesChange
+}: ManageCategoriesAnnonceProps) {
     const [categories, setCategories] = useState<Categorie[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<Categorie[]>(
         []
@@ -22,6 +28,29 @@ function ManageCategoriesAnnonce() {
         fetchCategories();
     }, []);
 
+    const handleCategoryChange: ChangeEventHandler<HTMLInputElement> = (
+        event
+    ) => {
+        const categoryName = event.target.value;
+        const isChecked = event.target.checked;
+        if (isChecked) {
+            setSelectedCategories([
+                ...selectedCategories,
+                { name: categoryName }
+            ]);
+        } else {
+            setSelectedCategories(
+                selectedCategories.filter(
+                    (category) => category.name !== categoryName
+                )
+            );
+        }
+    };
+
+    useEffect(() => {
+        handleCategoriesChange(selectedCategories);
+    }, [selectedCategories]);
+
     return (
         <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-5">
@@ -35,22 +64,7 @@ function ManageCategoriesAnnonce() {
                             id={categorie.name}
                             name={categorie.name}
                             value={categorie.name}
-                            onChange={(event) => {
-                                if (event.target.checked) {
-                                    setSelectedCategories([
-                                        ...selectedCategories,
-                                        categorie
-                                    ]);
-                                } else {
-                                    setSelectedCategories(
-                                        selectedCategories.filter(
-                                            (selectedCategorie) =>
-                                                selectedCategorie.name !==
-                                                categorie.name
-                                        )
-                                    );
-                                }
-                            }}
+                            onChange={handleCategoryChange}
                         />
                         <label htmlFor={categorie.name}>{categorie.name}</label>
                     </div>

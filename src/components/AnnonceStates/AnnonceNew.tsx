@@ -34,8 +34,8 @@ function AnnonceNew({ userId }: AnnonceNewProps) {
         setPrix(Number(e.target.value));
     };
 
-    const handleAddCategorie = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        //todo
+    const handleCategoriesChange = (newCategories: Categorie[]) => {
+        setCategories(newCategories);
     };
 
     const handleSubmit = async () => {
@@ -78,7 +78,9 @@ function AnnonceNew({ userId }: AnnonceNewProps) {
                 <h2 className="font-medium text-lg text-gray-700 mb-2">
                     Catégories
                 </h2>
-                <ManageCategoriesAnnonce />
+                <ManageCategoriesAnnonce
+                    handleCategoriesChange={handleCategoriesChange}
+                />
                 <ManageSaveAnnonce
                     handleSubmit={handleSubmit}
                     title={title}
