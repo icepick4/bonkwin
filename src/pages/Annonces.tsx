@@ -13,13 +13,15 @@ function Annonces({ isPrivate }: AnnoncesProps) {
     const [allAnnonces, setAllAnnonces] = useState<Annonce[]>([]);
 
     const handleResponse = async (response: Response) => {
-        if (response.ok) {
+        if (response.ok && response.status === 200) {
             const annonces = await response.json();
             setAnnonces(annonces);
             setAllAnnonces(annonces);
         } else {
             const error = await response.text();
             console.error(error);
+            setAnnonces([]);
+            setAllAnnonces([]);
         }
     };
 
@@ -31,6 +33,25 @@ function Annonces({ isPrivate }: AnnoncesProps) {
                 .includes(event.target.value.toLowerCase())
         );
         setAnnonces(filteredAnnonces);
+    };
+
+    const handleDelete = async (annonceId: number) => {
+        const response = await fetch(
+            `http://localhost:3005/api/annonce/${annonceId}`,
+            {
+                method: 'DELETE'
+            }
+        );
+        if (response.ok) {
+            const newAnnonces = annonces.filter(
+                (annonce) => annonce.id !== annonceId
+            );
+            setAnnonces(newAnnonces);
+            setAllAnnonces(newAnnonces);
+        } else {
+            const error = await response.text();
+            console.error(error);
+        }
     };
 
     useEffect(() => {
@@ -73,7 +94,12 @@ function Annonces({ isPrivate }: AnnoncesProps) {
             />
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {annonces.map((annonce) => (
-                    <SingleAnnonce key={annonce.id} annonce={annonce} />
+                    <SingleAnnonce
+                        key={annonce.id}
+                        annonce={annonce}
+                        isPrivate={isPrivate}
+                        handleDelete={handleDelete}
+                    />
                 ))}
             </div>
             {isPrivate && (

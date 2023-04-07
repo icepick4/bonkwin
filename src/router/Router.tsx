@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import AnnonceNew from '../components/AnnonceStates/AnnonceNew';
 import Logout from '../components/User/Logout';
+import AnnoncesCommentaires from '../pages/AnnonceCommentaires';
 import Annonces from '../pages/Annonces';
 import Home from '../pages/Home';
 import Login from '../pages/User/Login';
@@ -20,6 +21,7 @@ function App() {
                 <Route path="" element={<Annonces isPrivate={false} />} />
                 <Route path="user" element={<Annonces isPrivate={true} />} />
                 <Route path="new" element={<AnnonceNew userId={userId} />} />
+                <Route path=":id" element={<AnnoncesCommentaires />} />
             </Route>
         </Routes>
     );

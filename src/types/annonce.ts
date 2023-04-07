@@ -11,6 +11,7 @@ export type Annonce = {
 export type Commentaire = {
     userName: string;
     content: string;
+    id: number;
 };
 
 export type Categorie = {
