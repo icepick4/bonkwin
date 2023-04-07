@@ -10,11 +10,13 @@ type AnnoncesProps = {
 function Annonces({ isPrivate }: AnnoncesProps) {
     const [annonces, setAnnonces] = useState<Annonce[]>([]);
     const [search, setSearch] = useState<string>('');
+    const [allAnnonces, setAllAnnonces] = useState<Annonce[]>([]);
 
     const handleResponse = async (response: Response) => {
         if (response.ok) {
             const annonces = await response.json();
             setAnnonces(annonces);
+            setAllAnnonces(annonces);
         } else {
             const error = await response.text();
             console.error(error);
@@ -23,6 +25,12 @@ function Annonces({ isPrivate }: AnnoncesProps) {
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value);
+        const filteredAnnonces = allAnnonces.filter((annonce) =>
+            annonce.title
+                .toLowerCase()
+                .includes(event.target.value.toLowerCase())
+        );
+        setAnnonces(filteredAnnonces);
     };
 
     useEffect(() => {
@@ -44,20 +52,22 @@ function Annonces({ isPrivate }: AnnoncesProps) {
         fetchAnnonces();
     }, [isPrivate]);
 
-    if (annonces.length === 0) {
-        return <h1>There is no annonces</h1>;
-    }
-
     return (
-        <div className="flex flex-col gap-5">
-            <h1 className="text-5xl text-center">Les annonces</h1>
+        <div className="flex flex-col gap-5 w-5/6 justify-center items-center">
+            {isPrivate && (
+                <h1 className="text-4xl text-center">Mes annonces</h1>
+            )}
+            {!isPrivate && (
+                <h1 className="text-4xl text-center">Toutes les annonces</h1>
+            )}
+
             <label htmlFor="search" className="text-2xl text-center">
                 Rechercher une annonce
             </label>
             <input
                 type="text"
                 id="search"
-                className="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
+                className="border-2 w-1/2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
                 placeholder="Rechercher une annonce"
                 onChange={handleSearchChange}
             />

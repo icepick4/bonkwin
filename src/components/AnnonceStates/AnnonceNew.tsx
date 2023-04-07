@@ -65,7 +65,7 @@ function AnnonceNew({ userId }: AnnonceNewProps) {
     };
 
     return (
-        <div className="flex flex-col overflow-y-scroll h-4/6">
+        <div className="flex flex-col h-4/6 gap-5">
             <ManageHeadAnnonce
                 title={title}
                 description={description}
@@ -79,7 +79,6 @@ function AnnonceNew({ userId }: AnnonceNewProps) {
                     Catégories
                 </h2>
                 <ManageCategoriesAnnonce />
-
                 <ManageSaveAnnonce />
             </div>
         </div>
